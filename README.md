@@ -4,7 +4,7 @@
     </a>
 </h2>
 <h2 align="center">
-    Lập trình, thiết kế Front-End
+    Thiết kế, lập trình Front-End
 </h2>
 <div align="center">
     <p align="center">
