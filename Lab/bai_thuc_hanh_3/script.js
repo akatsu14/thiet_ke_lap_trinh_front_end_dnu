@@ -1,14 +1,15 @@
 function getProducts() {
   return new Promise(function (resolve, reject) {
-    const listProductsJson = fetch(
-      "https://6a0455b92afe8349b4b66d6c.mockapi.io/san_pham",
-    );
-    const listProducts = JSON.parse(listProductsJson);
-    if (listProducts) {
-      resolve(listProducts);
-    } else {
-      reject("Không thể tải danh sách sản phẩm");
-    }
+    fetch("https://6a0455b92afe8349b4b66d6c.mockapi.io/san_pham")
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (products) {
+        resolve(products);
+      })
+      .catch(function () {
+        reject("Không thể tải danh sách sản phẩm");
+      });
   });
 }
 
@@ -38,3 +39,8 @@ function loadProducts() {
       message.innerText = error;
     });
 }
+
+// Bổ sung trạng thái: đang tải, thành công, thất bại, dữ liệu rỗng.
+// Nếu danh sách rỗng: hiển thị “Không có sản phẩm”.
+// Tính tổng giá trị kho: price × quantity.
+// Không cho dữ liệu cũ bị lặp khi bấm nút nhiều lần.
