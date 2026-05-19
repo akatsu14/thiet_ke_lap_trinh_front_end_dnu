@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình Mô Phỏng Học JavaScript Cơ Bản</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .active-tab {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .code-block {
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- <header class="bg-white p-5 border-b border-slate-200 shadow-sm text-center">
+        <h1 class="text-2xl font-bold text-blue-600">Chương Trình Hỗ Trợ Học JavaScript Trực Quan</h1>
+        <p class="text-sm text-slate-500 mt-1">Học cấu trúc rẽ nhánh và vòng lặp qua ví dụ thực tế</p>
+    </header> -->
+
+    <nav class="flex justify-center gap-4 my-6">
+        <button onclick="switchLesson(1)" id="btn-lesson1"
+            class="active-tab px-4 py-2 rounded-lg font-semibold transition bg-white border border-slate-200 hover:bg-slate-100 shadow-sm cursor-pointer">Bài
+            1: if-else</button>
+        <button onclick="switchLesson(2)" id="btn-lesson2"
+            class="px-4 py-2 rounded-lg font-semibold transition bg-white border border-slate-200 hover:bg-slate-100 shadow-sm cursor-pointer">Bài
+            2: switch-case</button>
+        <button onclick="switchLesson(3)" id="btn-lesson3"
+            class="px-4 py-2 rounded-lg font-semibold transition bg-white border border-slate-200 hover:bg-slate-100 shadow-sm cursor-pointer">Bài
+            3: Vòng lặp For</button>
+    </nav>
+
+    <main class="flex-1 max-w-6xl w-full mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 px-4 pb-12 items-start">
+
+        <div class="flex flex-col gap-6 w-full">
+
+            <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 id="lesson-title" class="text-xl font-bold text-blue-600 mb-2">Bài 1: Kiểm tra làm bài tập</h2>
+                <p id="lesson-desc" class="text-sm text-slate-600 mb-4">Mục đích: Giúp hiểu cách if-else hoạt động dựa
+                    trên điều kiện Đúng/Sai.</p>
+
+                <div class="bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <label class="block text-xs font-bold text-slate-400 mb-2">DỮ LIỆU ĐẦU VÀO (INPUT):</label>
+
+                    <div id="input-lesson1" class="flex items-center gap-4">
+                        <span class="text-sm font-medium">Trạng thái bài tập:</span>
+                        <button onclick="toggleHomework(true)" id="hw-true"
+                            class="bg-green-600 text-white px-3 py-1.5 text-sm rounded font-medium shadow-sm cursor-pointer">Đã
+                            làm (true)</button>
+                        <button onclick="toggleHomework(false)" id="hw-false"
+                            class="bg-slate-200 text-slate-700 px-3 py-1.5 text-sm rounded font-medium shadow-sm cursor-pointer">Chưa
+                            làm (false)</button>
+                    </div>
+
+                    <div id="input-lesson2" class="hidden">
+                        <label for="session-select" class="text-sm font-medium block mb-2">Chọn số thứ tự buổi
+                            học:</label>
+                        <select id="session-select" onchange="runLesson2()"
+                            class="bg-white border border-slate-300 rounded px-3 py-2 text-slate-800 w-full max-w-xs focus:outline-none focus:border-blue-500 shadow-sm">
+                            <option value="1">Buổi 1</option>
+                            <option value="2">Buổi 2</option>
+                            <option value="3">Buổi 3</option>
+                            <option value="4">Buổi khác (Ví dụ: 4)</option>
+                        </select>
+                    </div>
+
+                    <div id="input-lesson3" class="hidden">
+                        <p class="text-sm text-slate-600 mb-3">Mô phỏng duyệt qua mảng dữ liệu có sẵn bằng vòng lặp.</p>
+                        <button onclick="runLesson3()"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded shadow transition w-full md:w-auto cursor-pointer">Chạy
+                            Vòng Lặp</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-col min-h-[320px]">
+                <label class="block text-xs font-bold text-slate-400 mb-4 tracking-wider">GIAO DIỆN HIỂN THỊ KẾT QUẢ
+                    (OUTPUT):</label>
+                <div id="output-screen"
+                    class="flex-1 bg-slate-50 rounded-lg p-6 border border-slate-200 flex flex-col items-center justify-center">
+                </div>
+            </section>
+
+        </div>
+
+        <section class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm w-full flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <label class="block text-xs font-bold text-slate-400 tracking-wider">MÃ NGUỒN JAVASCRIPT:</label>
+                <button onclick="toggleCodeVisibility()" id="btn-toggle-code"
+                    class="bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 px-3 py-1.5 text-xs rounded-lg font-bold transition cursor-pointer flex items-center gap-1">
+                    <span>🙈 Ẩn mã nguồn</span>
+                </button>
+            </div>
+
+            <div id="code-container" class="transition-all duration-300 overflow-hidden">
+                <pre
+                    class="code-block bg-slate-900 p-4 rounded-lg text-sm overflow-x-auto text-emerald-400 shadow-inner min-h-[445px]"><code id="code-display">
+// Code hiển thị tại đây
+                </code></pre>
+            </div>
+
+            <div id="code-hidden-msg"
+                class="hidden text-center py-20 bg-slate-50 border border-dashed border-slate-200 rounded-lg text-slate-400 italic text-sm">
+                Mã nguồn đã được ẩn. Nhấn nút "Xem mã nguồn" ở trên để hiển thị.
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        let currentLesson = 1;
+        let isHomeworkDone = true;
+        let isCodeVisible = true; // Trạng thái ẩn/hiện code
+
+        const lessons = ["if-else", "switch-case", "for"];
+        const statusList = [true, false, false];
+
+        // Hàm Ẩn / Hiện mã nguồn
+        function toggleCodeVisibility() {
+            const codeContainer = document.getElementById('code-container');
+            const hiddenMsg = document.getElementById('code-hidden-msg');
+            const btn = document.getElementById('btn-toggle-code');
+
+            isCodeVisible = !isCodeVisible;
+
+            if (isCodeVisible) {
+                codeContainer.classList.remove('hidden');
+                hiddenMsg.classList.add('hidden');
+                btn.innerHTML = '<span>🙈 Ẩn mã nguồn</span>';
+            } else {
+                codeContainer.classList.add('hidden');
+                hiddenMsg.classList.remove('hidden');
+                btn.innerHTML = '<span>👁️ Xem mã nguồn</span>';
+            }
+        }
+
+        // Hàm chuyển bài học
+        function switchLesson(lessonNum) {
+            currentLesson = lessonNum;
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`btn-lesson${i}`);
+                if (i === lessonNum) btn.classList.add('active-tab');
+                else btn.classList.remove('active-tab');
+                document.getElementById(`input-lesson${i}`).classList.toggle('hidden', i !== lessonNum);
+            }
+
+            if (lessonNum === 1) {
+                document.getElementById('lesson-title').innerText = "Bài 1: Kiểm tra làm bài tập (if-else)";
+                document.getElementById('lesson-desc').innerText = "Mục đích: Giúp sinh viên hiểu cách if-else rẽ nhánh dựa theo một điều kiện Đúng hoặc Sai.";
+                runLesson1();
+            } else if (lessonNum === 2) {
+                document.getElementById('lesson-title').innerText = "Bài 2: Chọn buổi học JavaScript (switch-case)";
+                document.getElementById('lesson-desc').innerText = "Mục đích: Phù hợp khi có nhiều lựa chọn giá trị cố định.";
+                runLesson2();
+            } else if (lessonNum === 3) {
+                document.getElementById('lesson-title').innerText = "Bài 3: Hiển thị tiến độ học tập (for + kết hợp)";
+                document.getElementById('lesson-desc').innerText = "Mục đích: Dùng vòng lặp duyệt danh sách, kết hợp kiểm tra trạng thái từng bài.";
+                document.getElementById('output-screen').innerHTML = `<p class="text-slate-400 italic text-center">Nhấn nút "Chạy Vòng Lặp" ở trên để xem hiệu ứng...</p>`;
+                updateCode3();
+            }
+        }
+
+        // --- LOGIC BÀI 1 ---
+        function toggleHomework(status) {
+            isHomeworkDone = status;
+            const btnTrue = document.getElementById('hw-true');
+            const btnFalse = document.getElementById('hw-false');
+            if (status) {
+                btnTrue.className = "bg-green-600 text-white px-3 py-1.5 text-sm rounded font-medium shadow-sm cursor-pointer";
+                btnFalse.className = "bg-slate-200 text-slate-700 px-3 py-1.5 text-sm rounded font-medium shadow-sm cursor-pointer";
+            } else {
+                btnTrue.className = "bg-slate-200 text-slate-700 px-3 py-1.5 text-sm rounded font-medium shadow-sm cursor-pointer";
+                btnFalse.className = "bg-red-600 text-white px-3 py-1.5 text-sm rounded font-medium shadow-sm cursor-pointer";
+            }
+            runLesson1();
+        }
+
+        function runLesson1() {
+            document.getElementById('code-display').innerText = `let isHomeworkDone = ${isHomeworkDone};\n\nif (isHomeworkDone) {\n    console.log("Bạn được cộng điểm chuyên cần");\n} else {\n    console.log("Bạn cần hoàn thành bài tập");\n}`;
+            const screen = document.getElementById('output-screen');
+            if (isHomeworkDone) {
+                screen.innerHTML = `<div class="text-center"><div class="text-5xl mb-2">🎉</div><div class="bg-green-100 border border-green-400 text-green-700 font-bold px-6 py-3 rounded-xl shadow-sm text-lg">"Bạn được cộng điểm chuyên cần"</div></div>`;
+            } else {
+                screen.innerHTML = `<div class="text-center"><div class="text-5xl mb-2">⚠️</div><div class="bg-red-100 border border-red-400 text-red-700 font-bold px-6 py-3 rounded-xl shadow-sm text-lg">"Bạn cần hoàn thành bài tập"</div></div>`;
+            }
+        }
+
+        // --- LOGIC BÀI 2 ---
+        function runLesson2() {
+            const val = document.getElementById('session-select').value;
+            document.getElementById('code-display').innerText = `let lessonNumber = ${val};\n\nswitch(lessonNumber) {\n    case 1:\n        console.log("Học cấu trúc if-else"); break;\n    case 2:\n        console.log("Học cấu trúc switch-case"); break;\n    case 3:\n        console.log("Học vòng lặp for"); break;\n    default:\n        console.log("Buổi học không hợp lệ");\n}`;
+
+            let msg = "", cls = "text-blue-700 border-blue-400 bg-blue-50";
+            switch (parseInt(val)) {
+                case 1: msg = "Học cấu trúc rẽ nhánh if-else"; break;
+                case 2: msg = "Học cấu trúc rẽ nhánh switch-case"; break;
+                case 3: msg = "Học vòng lặp for"; break;
+                default: msg = "Buổi học không hợp lệ"; cls = "text-amber-700 border-amber-400 bg-amber-50";
+            }
+            document.getElementById('output-screen').innerHTML = `<div class="w-full max-w-sm bg-white border border-slate-200 p-5 rounded-xl shadow-sm"><p class="text-xs text-slate-400 mb-2 font-bold">KẾT QUẢ TRẢ VỀ TRÊN CONSOLE:</p><div class="border-l-4 p-3 rounded font-semibold text-base ${cls}">${msg}</div></div>`;
+        }
+
+        // --- LOGIC BÀI 3 ---
+        function updateCode3() {
+            document.getElementById('code-display').innerText = `const lessons = ["if-else", "switch-case", "for"];
+const status = [true, false, false];
+
+for (let i = 0; i < lessons.length; i++) {
+    let lessonName = "";
+    switch (lessons[i]) {
+        case "if-else": 
+            lessonName = "Cấu trúc rẽ nhánh if-else"; 
+            break;
+        case "switch-case": 
+            lessonName = "Cấu trúc rẽ nhánh switch-case"; 
+            break;
+        case "for": 
+            lessonName = "Vòng lặp for"; 
+            break;
+    }
+    
+    console.log(\`Bài \${i + 1}: \${lessonName}\`);
+    if (status[i]) {
+        console.log("Trạng thái: Đã hoàn thành");
+    } else {
+        console.log("Trạng thái: Chưa hoàn thành");
+    }
+}`.trim();
+        }
+
+        function runLesson3() {
+            updateCode3();
+            const screen = document.getElementById('output-screen');
+            screen.innerHTML = `<div id="list-container" class="w-full max-w-sm flex flex-col gap-3"></div>`;
+            const container = document.getElementById('list-container');
+
+            lessons.forEach((lesson, index) => {
+                setTimeout(() => {
+                    let title = lesson === "if-else" ? "Cấu trúc rẽ nhánh if-else" : lesson === "switch-case" ? "Cấu trúc rẽ nhánh switch-case" : "Vòng lặp for";
+                    const isDone = statusList[index];
+                    const card = document.createElement('div');
+                    card.className = `p-3.5 rounded-xl border flex justify-between items-center bg-white shadow-sm transition-all duration-500 transform translate-y-2 opacity-0 ${isDone ? 'border-green-300 bg-green-50/30' : 'border-slate-200'}`;
+                    card.innerHTML = `<div><h4 class="font-bold text-slate-700 text-sm">Bài ${index + 1}: ${title}</h4><p class="text-xs ${isDone ? 'text-green-600' : 'text-slate-500'} mt-0.5">Trạng thái: ${isDone ? 'Đã hoàn thành' : 'Chưa hoàn thành'}</p></div><div class="text-xl">${isDone ? '✅' : '❌'}</div>`;
+                    container.appendChild(card);
+                    setTimeout(() => card.classList.remove('translate-y-2', 'opacity-0'), 50);
+                }, index * 500);
+            });
+        }
+
+        window.onload = () => switchLesson(1);
+    </script>
+</body>
+
+</html>

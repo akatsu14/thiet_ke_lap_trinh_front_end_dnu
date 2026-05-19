@@ -5,6 +5,7 @@ const person = {
   weight: 60,
   bmi: 20.76,
 };
+
 const jsonPerson = JSON.stringify(person); // Chuyển Object thành chuỗi JSON.
 console.log(jsonPerson);
 const parsedPerson = JSON.parse(jsonPerson); // Chuyển chuỗi JSON thành Object
